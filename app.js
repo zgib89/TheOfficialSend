@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
         productTiers: document.getElementById('product-tier-list')
     };
 
+    // Minimal mapping of tier names to CSS helper classes defined in index.html
+    // Used by renderSubCategoryPage and renderProductPage to pick text/border classes
+    const tierClassMap = {
+        'Budget': { border: 'tier-budget', text: 'text-budget' },
+        'Mid-Tier': { border: 'tier-mid', text: 'text-mid' },
+        'Premium': { border: 'tier-premium', text: 'text-premium' }
+    };
+
     // --- NAVIGATION LOGIC ---
 
     /**
