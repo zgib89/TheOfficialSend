@@ -50,7 +50,11 @@ const fs = require('fs');
     process.exit(consoleErrors.length ? 2 : 0);
   } catch (err) {
     console.error('Test runner error:', err);
-    try { await browser.close(); } catch(e){}
+    try {
+      await browser.close();
+    } catch (e) {
+      console.warn('Error closing browser after test failure:', e);
+    }
     process.exit(3);
   }
 })();
