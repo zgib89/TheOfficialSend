@@ -1,8 +1,11 @@
 /*
 == THE OFFICIAL SEND - APP LOGIC V4.0 ==
 This file controls the navigation and rendering for 'index.html'.
-It REQUIRES 'products.js' to be loaded first.
+Converted to ES modules: imports `DB` from './product.js'.
 */
+
+import { DB } from './product.js';
+import { tierClassMap } from './config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -27,13 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productTiers: document.getElementById('product-tier-list')
     };
 
-    // Minimal mapping of tier names to CSS helper classes defined in index.html
-    // Used by renderSubCategoryPage and renderProductPage to pick text/border classes
-    const tierClassMap = {
-        'Budget': { border: 'tier-budget', text: 'text-budget' },
-        'Mid-Tier': { border: 'tier-mid', text: 'text-mid' },
-        'Premium': { border: 'tier-premium', text: 'text-premium' }
-    };
+    // tierClassMap is imported from ./config.js
 
     // --- NAVIGATION LOGIC ---
 
