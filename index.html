@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Official Send | Definitive Gear Reviews</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="products.js" defer></script>
+    
+    <script src="app.js" defer></script>
+    
+    <style>
+        :root {
+            --color-primary: #10B981; /* Electric Green */
+            --color-bg-dark: #0F172A;  /* Dark Slate */
+            --color-bg-med: #1E293B;   /* Medium Slate */
+            --color-bg-light: #334155; /* Light Slate */
+            --color-budget: #FCD34D;   /* Yellow */
+            --color-mid: #3B82F6;      /* Blue */
+            --color-premium: #10B981;  /* Green */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-dark);
+            color: #CBD5E1;
+        }
+        .text-send { color: var(--color-primary); }
+        .bg-send { background-color: var(--color-primary); }
+        .border-send { border-color: var(--color-primary); }
+        .shadow-send { box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.5); }
+
+        .tier-budget { border-color: var(--color-budget) !important; }
+        .tier-mid { border-color: var(--color-mid) !important; }
+        .tier-premium { border-color: var(--color-premium) !important; }
+
+        .text-budget { color: var(--color-budget) !important; }
+        .text-mid { color: var(--color-mid) !important; }
+        .text-premium { color: var(--color-premium) !important; }
+
+        /* Hide all views by default */
+        .view { display: none; }
+        /* Show the active view */
+        .view.active { display: block; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="sticky top-0 z-50 bg-gray-900/60 backdrop-blur-md border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" id="logo-link" class="text-2xl font-black text-send tracking-tight">THE OFFICIAL SEND</a>
+                </div>
+                <nav class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#" id="home-link" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="https://github.com/zgib89/TheOfficialSend" target="_blank" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <nav id="breadcrumbs" class="mb-4 text-sm text-gray-400" aria-label="Breadcrumb"></nav>
+
+        <section id="home-view" class="view active">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                    The definitive, 100% unbiased guide to mission-critical gear.
+                </h1>
+                <p class="mt-4 text-xl text-gray-300 max-w-3xl mx-auto">
+                    AI scours the web to find the truth so you can
+                    <span class="text-send font-bold">Full Send.</span>
+                </p>
+            </div>
+            <div id="mission-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+        </section>
+
+        <section id="mission-view" class="view">
+            <h2 id="mission-title" class="text-4xl font-black text-white mb-2"></h2>
+            <p id="mission-tagline" class="text-lg text-gray-400 mb-8"></p>
+            <div id="subcategory-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                </div>
+        </section>
+
+        <section id="subcategory-view" class="view">
+            <h2 id="subcategory-title" class="text-4xl font-black text-white mb-8"></h2>
+            <div id="product-tier-list" class="space-y-8">
+                </div>
+        </section>
+
+        <section id="product-view" class="view">
+            <div class="max-w-4xl mx-auto">
+                </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 border-t border-gray-700 mt-16">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p>&copy; 2024 The Official Send. All rights reserved.</p>
+            <p class="text-xs mt-1">We are a 100% unbiased, AI-vetted review site. We may earn a commission from affiliate links, but our verdicts are not for sale.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
