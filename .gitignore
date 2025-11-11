@@ -1,0 +1,17 @@
+node_modules/
+package-lock.json
+npm-debug.log
+.venv/
+env/
+/.cache/
+
+# Playwright / test artifacts
+smoke-screenshot.png
+smoke-console.json
+playwright-report/
+
+# Editor/temp
+.vscode/
+.idea/
+*.swp
+*.tmp
