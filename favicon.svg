@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="18" fill="#0F172A"/>
+  <circle cx="64" cy="44" r="28" fill="#10B981"/>
+  <text x="64" y="86" font-family="Inter, sans-serif" font-size="28" fill="#FFFFFF" text-anchor="middle" alignment-baseline="central" font-weight="700">SEND</text>
+</svg>
