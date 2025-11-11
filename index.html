@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Official Send: AI Product Review Portal</title>
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter Font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F172A; /* Slate 900 */
+            color: #E2E8F0; /* Slate 200 */
+        }
+        /* Custom scrollbar for a touch of style */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #10B981; /* Emerald 500 */
+            border-radius: 4px;
+        }
+        .text-emerald-500 { color: #10B981; }
+        .bg-emerald-500 { background-color: #10B981; }
+        .border-emerald-500 { border-color: #10B981; }
+        .shadow-neon-green { box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        /* Utility for displaying active view */
+        .view { display: none; }
+        .view.active { display: block; }
+    </style>
+    <!-- Lucide Icons -->
+    <script>
+        // Placeholder for lucide icons, often used in React, but we'll use SVG fallback/inline SVG
+        // For simplicity and single-file mandate, we rely on inline SVG for icons.
+        // We will define some common SVG icons here for reuse.
+        const iconDefs = {
+            check: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>`,
+            x: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-circle"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>`,
+            star: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+            menu: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>`,
+            close: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`,
+            search: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>`
+        };
+    </script>
+</head>
+<body class="min-h-screen">
+
+    <!-- Data Array (Simulating a database) -->
+    <script>
+        const productsData = [
+            {
+                id: 'pro-headset-v3',
+                category: 'Audio',
+                name: 'Pro Audio Headset V3',
+                tagline: 'Precision sound for competitive gaming.',
+                rating: 4.8,
+                reviews: 1245,
+                price: 189.99,
+                image: 'https://placehold.co/600x400/10B981/0F172A?text=Pro+Headset+V3',
+                pros: ['Exceptional spatial audio accuracy.', 'Lightweight and comfortable design for long sessions.', 'Detachable noise-canceling microphone.', 'Robust 40-hour battery life.'],
+                cons: ['High price point.', 'Lacks wireless charging.', 'Default EQ needs adjustment.'],
+                verdict: 'The V3 sets a new standard for competitive audio, offering unparalleled accuracy. A definite "Official Send" for pro users.',
+                features: ['50mm Neodymium Drivers', 'USB-C Charging', 'Swappable Earcups', 'Customizable RGB']
+            },
+            {
+                id: 'ai-mouse-pad',
+                category: 'Peripheral',
+                name: 'AI Smart Mouse Pad',
+                tagline: 'Adaptive surface for next-gen precision.',
+                rating: 4.1,
+                reviews: 452,
+                price: 49.99,
+                image: 'https://placehold.co/600x400/10B981/0F172A?text=AI+Mouse+Pad',
+                pros: ['Self-optimizing surface texture.', 'Integrated Qi wireless charging zone.', 'LED notification strip.'],
+                cons: ['Requires proprietary software.', 'Expensive for a mouse pad.'],
+                verdict: 'A glimpse into the future of desk mats. While ambitious, the software integration is currently too clunky for a full "Official Send".',
+                features: ['Dynamic Surface', 'Qi Charging', 'Non-Slip Rubber Base', 'Machine Washable']
+            },
+            {
+                id: 'mech-keyboard-tkl',
+                category: 'Peripheral',
+                name: 'Mechanical TKL Keyboard',
+                tagline: 'Compact, tactile, and supremely fast.',
+                rating: 4.6,
+                reviews: 3200,
+                price: 129.99,
+                image: 'https://placehold.co/600x400/10B981/0F172A?text=Mech+Keyboard+TKL',
+                pros: ['Hot-swappable switches.', 'Aircraft-grade aluminum chassis.', 'Zero-latency polling rate.', 'Double-shot PBT keycaps.'],
+                cons: ['Loud click noise (optional switch swap needed).', 'No dedicated media keys.'],
+                verdict: 'An outstanding TKL option that excels in build quality and customizability. An easy "Official Send" for keyboard enthusiasts.',
+                features: ['Tactile Brown Switches', 'Aluminum Chassis', 'USB-C Detachable Cable', 'Full RGB Backlighting']
+            },
+             {
+                id: 'vr-glove-haptic',
+                category: 'Accessory',
+                name: 'Haptic Feedback VR Gloves',
+                tagline: 'Feel the virtual world with true touch.',
+                rating: 3.5,
+                reviews: 98,
+                price: 349.00,
+                image: 'https://placehold.co/600x400/10B981/0F172A?text=VR+Haptic+Gloves',
+                pros: ['Groundbreaking haptic sensation.', 'Lightweight and easy to put on.', 'Excellent battery life for VR.'],
+                cons: ['Very expensive.', 'Limited compatibility with current VR titles.', 'Setup process is complex.'],
+                verdict: 'While innovative, the limited software support makes this a tough sell for most users right now. Wait for V2.',
+                features: ['Per-Finger Haptics', 'Magnetic Charging', 'Bluetooth 5.2', 'Adjustable Wrist Strap']
+            }
+        ];
+    </script>
+
+    <!-- Navigation and Global Components -->
+    <header class="sticky top-0 z-40 bg-slate-900 border-b border-emerald-500 shadow-neon-green">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo/Home Button -->
+                <a href="#home" id="home-link" class="text-2xl font-extrabold text-emerald-500 tracking-wider transition duration-300 hover:opacity-80">
+                    THE SEND
+                </a>
+
+                <!-- Search and Menu Buttons (Mobile-First) -->
+                <div class="flex items-center space-x-3">
+                    <button id="search-button" class="p-2 rounded-full hover:bg-slate-800 transition duration-150">
+                        <span class="w-6 h-6 text-slate-200" data-icon="search"></span>
+                    </button>
+                    <button id="menu-button" class="p-2 rounded-full hover:bg-slate-800 transition duration-150">
+                        <span class="w-6 h-6 text-slate-200" data-icon="menu"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mega Menu Overlay (Mobile/Tablet) -->
+    <div id="mega-menu" class="fixed inset-0 z-30 bg-slate-900/95 backdrop-blur-sm hidden" style="opacity: 0;">
+        <div class="max-w-md mx-auto p-6 mt-20">
+            <h2 class="text-3xl font-bold mb-6 text-emerald-500 border-b border-slate-700 pb-2">Categories</h2>
+            <ul id="mega-menu-list" class="space-y-4">
+                <!-- Menu items rendered by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-80px)]">
+
+        <!-- Home View -->
+        <div id="home-view" class="view active">
+            <section class="text-center py-16">
+                <h1 class="text-5xl sm:text-7xl font-extrabold mb-4 leading-tight">
+                    <span class="text-white">AI-Grade Reviews.</span> <span class="text-emerald-500">100% Signal.</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto mb-10">
+                    We cut through the noise. Only the products that earn the **Official Send** rating make it to your setup.
+                </p>
+                <button onclick="showView('products')" class="bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold py-3 px-8 rounded-xl transition duration-300 shadow-lg shadow-emerald-500/50 transform hover:scale-105">
+                    See All Reviews
+                </button>
+            </section>
+
+            <!-- Featured Products -->
+            <h2 class="text-3xl font-bold mb-6 border-b border-slate-800 pb-2 text-white">Featured Selections</h2>
+            <div id="featured-products-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Featured cards rendered here -->
+            </div>
+        </div>
+
+        <!-- Products List View -->
+        <div id="products-view" class="view">
+            <h1 class="text-4xl font-bold mb-8 text-emerald-500 border-b border-slate-800 pb-2">All Products</h1>
+            <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                <select id="category-filter" class="w-full sm:w-1/3 bg-slate-800 text-slate-200 p-3 rounded-lg border-2 border-slate-700 focus:border-emerald-500 outline-none">
+                    <option value="">All Categories</option>
+                    <!-- Options populated by JS -->
+                </select>
+                <div class="relative w-full sm:w-2/3">
+                    <input type="text" id="search-input-list" placeholder="Search products..." class="w-full bg-slate-800 text-slate-200 p-3 pl-10 rounded-lg border-2 border-slate-700 focus:border-emerald-500 outline-none">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" data-icon="search"></span>
+                </div>
+            </div>
+
+            <div id="product-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Product list items rendered here -->
+            </div>
+        </div>
+
+        <!-- Product Detail View -->
+        <div id="detail-view" class="view">
+            <button onclick="showView('products')" class="mb-6 flex items-center text-emerald-500 hover:text-emerald-400 transition duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-circle mr-2"><circle cx="12" cy="12" r="10"/><path d="M12 8l-4 4 4 4M16 12H8"/></svg>
+                Back to All Reviews
+            </button>
+
+            <div class="bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-700">
+                <h1 id="detail-name" class="text-4xl sm:text-5xl font-extrabold text-white mb-2"></h1>
+                <p id="detail-tagline" class="text-xl text-emerald-500 mb-4"></p>
+
+                <div class="flex items-center text-lg text-slate-400 mb-6">
+                    <span id="detail-rating-stars" class="flex mr-2"></span>
+                    (<span id="detail-rating"></span>) -
+                    <span id="detail-reviews" class="ml-2 text-slate-400"></span> Reviews
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Column 1: Image & Price -->
+                    <div class="lg:col-span-1">
+                        <img id="detail-image" src="" alt="Product Image" class="w-full h-auto rounded-xl object-cover border-2 border-emerald-500 shadow-neon-green">
+                        <div class="mt-6 text-center">
+                            <p class="text-4xl font-extrabold text-emerald-500 mb-3">
+                                $<span id="detail-price"></span>
+                            </p>
+                            <a id="detail-cta" href="#" target="_blank" class="block w-full bg-emerald-500 text-slate-900 font-bold py-3 rounded-lg transition duration-300 hover:bg-emerald-600 transform hover:scale-[1.02] shadow-lg">
+                                Buy on Amazon
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 & 3: Details & Verdict -->
+                    <div class="lg:col-span-2">
+                        <!-- Pros and Cons -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <h3 class="text-2xl font-bold text-emerald-500 mb-3 flex items-center">
+                                    <span class="w-6 h-6 mr-2" data-icon="check"></span>
+                                    Pros
+                                </h3>
+                                <ul id="detail-pros" class="space-y-2 text-slate-300">
+                                    <!-- Pros list rendered by JS -->
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-red-500 mb-3 flex items-center">
+                                    <span class="w-6 h-6 mr-2" data-icon="x"></span>
+                                    Cons
+                                </h3>
+                                <ul id="detail-cons" class="space-y-2 text-slate-300">
+                                    <!-- Cons list rendered by JS -->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Official Verdict -->
+                        <h3 class="text-3xl font-bold mb-4 text-white">The Official Verdict:</h3>
+                        <p id="detail-verdict" class="text-xl p-4 bg-slate-700 rounded-lg border-l-4 border-emerald-500 italic shadow-md">
+                            <!-- Verdict text rendered by JS -->
+                        </p>
+
+                        <!-- Features -->
+                         <h3 class="text-2xl font-bold mt-8 mb-3 text-white border-b border-slate-700 pb-1">Key Features</h3>
+                         <div id="detail-features" class="flex flex-wrap gap-2 text-sm">
+                             <!-- Features tags rendered by JS -->
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results View -->
+        <div id="search-view" class="view">
+             <h1 class="text-4xl font-bold mb-4 text-emerald-500">Search Results</h1>
+             <p class="text-lg text-slate-400 mb-6">Showing results for: "<span id="search-query-display" class="text-white font-semibold"></span>"</p>
+             <div id="search-results-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Search result cards rendered here -->
+             </div>
+             <p id="no-search-results" class="hidden text-xl text-center text-slate-400 py-10">No products matched your search. Try a different term.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-emerald-500 py-6 mt-12 shadow-neon-green">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            &copy; 2024 The Official Send. All rights reserved. | Reviews powered by Gemini AI.
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- GLOBAL STATE & UTILS ---
+        let currentView = 'home';
+        let currentProductData = productsData;
+        const menuButton = document.getElementById('menu-button');
+        const megaMenu = document.getElementById('mega-menu');
+
+        // Maps data-icon names to SVG strings
+        const iconCache = {
+            'search': iconDefs.search,
+            'menu': iconDefs.menu,
+            'check': iconDefs.check,
+            'x': iconDefs.x
+        };
+
+        // Function to inject SVG icons
+        const injectIcons = (container = document) => {
+            container.querySelectorAll('[data-icon]').forEach(el => {
+                const iconName = el.getAttribute('data-icon');
+                if (iconCache[iconName]) {
+                    el.innerHTML = iconCache[iconName];
+                    el.classList.remove('w-6', 'h-6'); // Adjust size via Tailwind classes
+                    el.classList.add('w-full', 'h-full');
+                }
+            });
+        };
+
+
+        // --- VIEW MANAGEMENT ---
+
+        /**
+         * Switches the active view displayed to the user.
+         * @param {string} viewId - The ID of the view to show (e.g., 'home', 'products', 'detail').
+         * @param {string|object} data - Optional data, usually a product ID for the detail view.
+         */
+        const showView = (viewId, data = null) => {
+            // Hide current view and show new view
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+                view.style.display = 'none';
+            });
+            document.getElementById(`${viewId}-view`).classList.add('active');
+            document.getElementById(`${viewId}-view`).style.display = 'block';
+
+            currentView = viewId;
+            window.scrollTo(0, 0); // Scroll to top on view change
+
+            // Handle view-specific rendering
+            if (viewId === 'detail' && data) {
+                renderProductDetail(data);
+            } else if (viewId === 'products') {
+                renderProductList(currentProductData);
+            } else if (viewId === 'home') {
+                renderFeaturedProducts();
+            } else if (viewId === 'search') {
+                 // Nothing specific needed here, as search results are rendered by the search handler
+            }
+
+            // Always re-inject icons after rendering new content
+            setTimeout(injectIcons, 0);
+        };
+
+
+        // --- RENDER FUNCTIONS ---
+
+        // Helper to generate star rating HTML
+        const renderStars = (rating) => {
+            const fullStars = Math.floor(rating);
+            let starsHtml = '';
+            for (let i = 0; i < 5; i++) {
+                if (i < fullStars) {
+                    starsHtml += `<span class="w-4 h-4 text-yellow-400">${iconDefs.star}</span>`;
+                } else {
+                    // Empty star placeholder
+                    starsHtml += `<span class="w-4 h-4 text-slate-600">${iconDefs.star}</span>`;
+                }
+            }
+            return starsHtml;
+        };
+
+        // Renders a single product card
+        const renderProductCard = (product) => {
+            const ratingStars = renderStars(product.rating);
+            return `
+                <div onclick="showView('detail', '${product.id}')" class="bg-slate-800 rounded-xl overflow-hidden shadow-xl hover:shadow-neon-green transition duration-300 cursor-pointer transform hover:scale-[1.01] border border-slate-700">
+                    <img src="${product.image}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/10B981/0F172A?text=Image+Unavailable';" alt="${product.name}" class="w-full h-48 object-cover border-b border-emerald-500">
+                    <div class="p-4">
+                        <h3 class="text-xl font-bold text-white">${product.name}</h3>
+                        <p class="text-sm text-slate-400 mb-3">${product.tagline}</p>
+                        <div class="flex items-center mb-3">
+                            <div class="flex mr-2">${ratingStars}</div>
+                            <span class="text-emerald-500 font-semibold">${product.rating.toFixed(1)}</span>
+                            <span class="text-xs text-slate-500 ml-2">(${product.reviews} reviews)</span>
+                        </div>
+                        <p class="text-3xl font-extrabold text-emerald-500">$${product.price.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Renders the list of all products
+        const renderProductList = (products) => {
+            const container = document.getElementById('product-list-container');
+            if (container) {
+                 container.innerHTML = products.map(renderProductCard).join('');
+                 // Update the product list container for search/filter results
+            }
+        };
+
+        // Renders featured products (first 3) on the home page
+        const renderFeaturedProducts = () => {
+            const container = document.getElementById('featured-products-list');
+            if (container) {
+                const featured = productsData.slice(0, 3);
+                container.innerHTML = featured.map(renderProductCard).join('');
+            }
+        };
+
+        // Renders a specific product detail page
+        const renderProductDetail = (productId) => {
+            const product = productsData.find(p => p.id === productId);
+            if (!product) return;
+
+            // Update main details
+            document.getElementById('detail-name').textContent = product.name;
+            document.getElementById('detail-tagline').textContent = product.tagline;
+            document.getElementById('detail-image').src = product.image;
+            document.getElementById('detail-price').textContent = product.price.toFixed(2);
+
+            // Update rating
+            document.getElementById('detail-rating').textContent = product.rating.toFixed(1);
+            document.getElementById('detail-reviews').textContent = product.reviews.toLocaleString();
+            document.getElementById('detail-rating-stars').innerHTML = renderStars(product.rating);
+
+            // Update features
+            const featuresContainer = document.getElementById('detail-features');
+            featuresContainer.innerHTML = product.features.map(f =>
+                `<span class="bg-slate-700 text-emerald-300 px-3 py-1 rounded-full text-xs font-semibold">${f}</span>`
+            ).join('');
+
+            // Update Pros
+            const prosList = document.getElementById('detail-pros');
+            prosList.innerHTML = product.pros.map(p =>
+                `<li class="flex items-start"><span class="w-5 h-5 mr-2 text-emerald-500 flex-shrink-0">${iconDefs.check}</span>${p}</li>`
+            ).join('');
+
+            // Update Cons
+            const consList = document.getElementById('detail-cons');
+            consList.innerHTML = product.cons.map(c =>
+                `<li class="flex items-start"><span class="w-5 h-5 mr-2 text-red-500 flex-shrink-0">${iconDefs.x}</span>${c}</li>`
+            ).join('');
+
+            document.getElementById('detail-verdict').textContent = product.verdict;
+
+            // Update CTA link
+            document.getElementById('detail-cta').href = `https://amazon.com/official-send-${product.id}`;
+        };
+
+        // Renders the links inside the Mega Menu
+        const renderMegaMenu = () => {
+            const menuList = document.getElementById('mega-menu-list');
+            const categories = ['Home', ...new Set(productsData.map(p => p.category))];
+
+            menuList.innerHTML = categories.map(cat => {
+                const view = cat === 'Home' ? 'home' : 'products';
+                const filter = cat === 'Home' ? '' : cat;
+
+                return `
+                    <li>
+                        <a href="#${view}${filter ? '?cat=' + filter : ''}" onclick="event.preventDefault(); toggleMegaMenu(); handleMegaMenuClick('${view}', '${filter}');"
+                           class="block text-2xl font-semibold text-slate-200 hover:text-emerald-500 transition duration-150 p-2 rounded-lg hover:bg-slate-800">
+                            ${cat}
+                        </a>
+                    </li>
+                `;
+            }).join('');
+        };
+
+        // Handles menu click logic (category filter and view change)
+        const handleMegaMenuClick = (viewId, category = '') => {
+            if (category) {
+                 // Set filter and render product list
+                 document.getElementById('category-filter').value = category;
+                 filterAndSearchProducts();
+            } else if (viewId === 'home') {
+                 // If home, clear filters and show home view
+                 document.getElementById('category-filter').value = '';
+                 document.getElementById('search-input-list').value = '';
+                 showView('home');
+            }
+            showView('products');
+        };
+
+        // --- FILTER AND SEARCH LOGIC ---
+
+        const filterAndSearchProducts = () => {
+            const category = document.getElementById('category-filter').value;
+            const searchTerm = document.getElementById('search-input-list').value.toLowerCase();
+
+            currentProductData = productsData.filter(product => {
+                const matchesCategory = !category || product.category === category;
+                const matchesSearch = !searchTerm ||
+                                      product.name.toLowerCase().includes(searchTerm) ||
+                                      product.tagline.toLowerCase().includes(searchTerm);
+                return matchesCategory && matchesSearch;
+            });
+
+            // Update the products view list
+            if (currentView === 'products') {
+                 renderProductList(currentProductData);
+            }
+            // If on search view, update search results
+            if (currentView === 'search') {
+                 renderSearchResults(searchTerm, currentProductData);
+            }
+        };
+
+        const renderSearchResults = (query, results) => {
+             document.getElementById('search-query-display').textContent = query;
+             const container = document.getElementById('search-results-container');
+             const noResults = document.getElementById('no-search-results');
+
+             if (results.length === 0) {
+                 container.innerHTML = '';
+                 noResults.classList.remove('hidden');
+             } else {
+                 container.innerHTML = results.map(renderProductCard).join('');
+                 noResults.classList.add('hidden');
+             }
+             showView('search');
+        };
+
+        // --- MOBILE MENU LOGIC (FIXED) ---
+
+        const toggleMegaMenu = (force = null) => {
+            const isVisible = megaMenu.classList.contains('active-menu');
+
+            if (force === true && !isVisible || force === false && isVisible || force === null) {
+                 // Toggle logic
+                 if (isVisible) {
+                     megaMenu.style.opacity = 0;
+                     setTimeout(() => {
+                          megaMenu.classList.add('hidden');
+                          megaMenu.classList.remove('active-menu');
+                     }, 300); // Wait for fade out
+                 } else {
+                     megaMenu.classList.remove('hidden');
+                     setTimeout(() => {
+                          megaMenu.style.opacity = 1;
+                          megaMenu.classList.add('active-menu');
+                     }, 10); // Short delay for CSS transition trigger
+                 }
+            }
+        };
+
+        // Mobile/Click Toggle for Mega Menu (FIXED LOGIC)
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMegaMenu();
+        });
+
+        // Close menu if user clicks outside of it (FIXED LOGIC)
+        document.addEventListener('click', (e) => {
+            if (megaMenu.classList.contains('active-menu') && !megaMenu.contains(e.target) && !menuButton.contains(e.target)) {
+                toggleMegaMenu(false);
+            }
+        });
+
+
+        // --- EVENT LISTENERS & INITIALIZATION ---
+
+        const initializeApp = () => {
+            // Populate category filter dropdown
+            const categories = new Set(productsData.map(p => p.category));
+            const filterSelect = document.getElementById('category-filter');
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                filterSelect.appendChild(option);
+            });
+
+            // Add event listeners for filters/search
+            filterSelect.addEventListener('change', filterAndSearchProducts);
+            document.getElementById('search-input-list').addEventListener('input', filterAndSearchProducts);
+
+            // Global Search Button Listener (Mobile Header Search)
+            document.getElementById('search-button').addEventListener('click', () => {
+                 const query = prompt("Enter your search query:"); // Use prompt as simple user input for now
+                 if (query) {
+                     // Since prompt is used, we treat this as a direct search execution
+                     document.getElementById('search-input-list').value = query;
+                     filterAndSearchProducts();
+                 }
+            });
+
+            // Add SVG styling and fix hover effects for menu/search
+            injectIcons();
+
+            // Render components and show initial view
+            renderMegaMenu();
+            renderFeaturedProducts();
+            showView('home');
+
+             // Handle browser back/forward history (simple hash-based routing)
+             window.addEventListener('hashchange', () => {
+                 // Simple routing based on hash for a single-page feel
+                 const hash = window.location.hash.slice(1);
+                 if (hash.startsWith('detail=')) {
+                     showView('detail', hash.split('=')[1]);
+                 } else if (hash.startsWith('products')) {
+                     showView('products');
+                 } else {
+                     showView('home');
+                 }
+             });
+
+             // Apply initial styles for menu transition
+             megaMenu.style.transition = 'opacity 0.3s ease-in-out';
+        };
+
+        // Initialize the app when the DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
