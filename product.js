@@ -19,7 +19,7 @@ const pImg = (name, tier) => {
 };
 
 // THE V4 MASTER DATABASE
-const DB = [
+export const DB = [
     // === 1. TRIATHLON (Mission: MULTI-SPORT) ===
     {
         id: "triathlon",
