@@ -1,0 +1,8 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "void-style": "ok",
+    "img-req-alt": "warn",
+    "doctype-html5": "error"
+  }
+}
